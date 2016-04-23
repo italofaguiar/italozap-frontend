@@ -3,21 +3,30 @@ angular.module('mynotes.user', [])
 
     var apiUrl = 'http://localhost:8200';
 
-    var loggedIn = false;
-
     return {
 
       login: function (credentials) {
         return $http.post(apiUrl + '/authenticate', credentials)
           .then(function (response) {
-            var token = response.data.token;
-            $http.defaults.headers.common.Authorization = 'Bearer ' + token;
-            loggedIn = true;
+            var auth = 'Bearer ' + response.data.token;
+            $http.defaults.headers.common.Authorization = auth;
+            window.localStorage['auth'] = auth;
           });
       },
 
-      isLoggedIn: function () {
-        return loggedIn;
+      checkIfLogged: function () {
+        var auth = window.localStorage['auth'];
+        $http.defaults.headers.common.Authorization = auth;
+        return $http.get(apiUrl + '/notes/').then(
+          function (response) {
+            if (response.status == 200) {
+              return true;
+            }
+            return false;
+          },
+          function () {
+            return false;
+          })
       }
     }
   });

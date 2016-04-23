@@ -122,12 +122,15 @@
     $urlRouterProvider.otherwise('/');
   });
 
-  app.run(function ($rootScope, $state, $ionicPlatform, User) {
+  app.run(function ($rootScope, $state, $ionicPlatform, $ionicHistory, User) {
     $rootScope.$on('$stateChangeStart', function (event, toState) {
-      if (!User.isLoggedIn() && toState.name != 'login') {
-        event.preventDefault();
-        $state.go('login');
-      }
+      User.checkIfLogged().then(function (isLoggedIn) {
+          if (!isLoggedIn && toState.name != 'login') {
+            event.preventDefault();
+            $ionicHistory.nextViewOptions({historyRoot: 'true'})
+            $state.go('login');
+          }
+        });
     });
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {
