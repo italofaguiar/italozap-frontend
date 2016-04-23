@@ -4,10 +4,10 @@ angular.module('mynotes.notestore', [])
     var notes = angular.fromJson(window.localStorage['notes'] || '[]');
 
     //var apiUrl = 'https://notas-italo-backend.herokuapp.com';
-    //var apiUrl = 'http://ws.tocae.com.br';
+    var apiUrl = 'http://ws.tocae.com.br';
     //var apiUrl = 'http://192.168.0.195:8200';
     //var apiUrl = 'http://localhost:8200';
-    var apiUrl = 'http://localhost:8300';
+    //var apiUrl = 'http://192.168.0.20:8300';
 
     return {
 

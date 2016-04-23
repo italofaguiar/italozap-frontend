@@ -2,10 +2,9 @@
 
   var app = angular.module('mynotes', ['ionic', 'mynotes.user', 'mynotes.notestore']);
 
-  app.controller('ListCtrl', function ($scope, NoteStore) {
+  app.controller('ListCtrl', function ($scope, NoteStore, $state, $ionicHistory, User) {
 
     $scope.reordering = false;
-
 
     $scope.doScreenRefresh = function () {
       refreshNotes()
@@ -36,6 +35,12 @@
 
     $scope.toogleReordering = function () {
       $scope.reordering = !$scope.reordering;
+    };
+
+    $scope.logout = function() {
+      User.logout();
+      $ionicHistory.nextViewOptions({historyRoot: 'true'})
+      $state.go('login');
     }
 
   });
@@ -90,7 +95,19 @@
           },
           function () {
             renewCredentials();
-            $scope.errorMsg = "Login failed"
+            $scope.errorMsg = "Sign in failed"
+          });
+    };
+
+    $scope.signup = function () {
+      User.signup($scope.credentials)
+        .then(function () {
+            $ionicHistory.nextViewOptions({historyRoot: 'true'})
+            $state.go('list');
+          },
+          function () {
+            renewCredentials();
+            $scope.errorMsg = "Sign up failed"
           });
     }
 
@@ -117,7 +134,8 @@
     ).state('login', {
         url: '/login',
         templateUrl: 'templates/login.html',
-        controller: 'LoginCtrl'
+        controller: 'LoginCtrl',
+        cache: false
       }
     );
     $urlRouterProvider.otherwise('/');
