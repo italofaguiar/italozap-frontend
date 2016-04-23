@@ -7,8 +7,8 @@
     <ion-list show-reorder="reordering">
       <ion-item
         class="item-remove-animate item-icon-right"
-        href="#/edit/{{note.id}}"
-        ng-repeat="note in notes track by note.id">
+        href="#/edit/{{note._id}}"
+        ng-repeat="note in notes track by note._id">
         <h2>{{note.title}}</h2>
         <p>{{note.description}}</p>
         <i class="icon ion-ios-arrow-right"></i>
@@ -18,7 +18,7 @@
         <ion-option-button
           side="left"
           class="button-assertive icon-left ion-trash-a"
-          ng-click="remove(note.id)">
+          ng-click="remove(note._id)">
           Delete
         </ion-option-button>
       </ion-item>
