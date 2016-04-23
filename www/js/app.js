@@ -4,6 +4,7 @@
 
   app.controller('ListCtrl', function ($scope, NoteStore, $state, $ionicHistory, User) {
 
+    $scope.user = window.localStorage['user'];
     $scope.reordering = false;
 
     $scope.doScreenRefresh = function () {
@@ -37,7 +38,7 @@
       $scope.reordering = !$scope.reordering;
     };
 
-    $scope.logout = function() {
+    $scope.logout = function () {
       User.logout();
       $ionicHistory.nextViewOptions({historyRoot: 'true'})
       $state.go('login');
@@ -90,7 +91,8 @@
     $scope.login = function () {
       User.login($scope.credentials)
         .then(function () {
-            $ionicHistory.nextViewOptions({historyRoot: 'true'})
+            window.localStorage['user'] = $scope.credentials.user;
+            $ionicHistory.nextViewOptions({historyRoot: 'true'});
             $state.go('list');
           },
           function () {
@@ -144,12 +146,12 @@
   app.run(function ($rootScope, $state, $ionicPlatform, $ionicHistory, User) {
     $rootScope.$on('$stateChangeStart', function (event, toState) {
       User.checkIfLogged().then(function (isLoggedIn) {
-          if (!isLoggedIn && toState.name != 'login') {
-            event.preventDefault();
-            $ionicHistory.nextViewOptions({historyRoot: 'true'});
-            $state.go('login');
-          }
-        });
+        if (!isLoggedIn && toState.name != 'login') {
+          event.preventDefault();
+          $ionicHistory.nextViewOptions({historyRoot: 'true'});
+          $state.go('login');
+        }
+      });
     });
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {

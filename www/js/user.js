@@ -1,7 +1,8 @@
 angular.module('mynotes.user', [])
   .factory('User', function ($http) {
 
-    var apiUrl = 'http://ws.tocae.com.br';
+    //var apiUrl = 'http://ws.tocae.com.br';
+    var apiUrl = 'http://localhost:8300';
 
     return {
 
@@ -15,7 +16,8 @@ angular.module('mynotes.user', [])
       },
 
       logout: function () {
-            window.localStorage['auth'] = null;
+        window.localStorage['auth'] = null;
+        window.localStorage['user'] = null;
       },
 
       signup: function (credentials) {

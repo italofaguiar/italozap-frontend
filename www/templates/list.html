@@ -1,4 +1,9 @@
 <ion-view view-title="My Notes" ng-controller="ListCtrl">
+  <ion-nav-buttons side="right">
+    <button class="button icon-left ion-person">
+      {{user}}
+    </button>
+  </ion-nav-buttons>
   <ion-content overflow-scroll="false">
     <ion-refresher
       pulling-text="Pull to refresh..."
