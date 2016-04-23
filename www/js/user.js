@@ -1,7 +1,7 @@
 angular.module('mynotes.user', [])
   .factory('User', function ($http) {
 
-    var apiUrl = 'http://localhost:8200';
+    var apiUrl = 'http://localhost:8300';
 
     return {
 
