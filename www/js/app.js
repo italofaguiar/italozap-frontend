@@ -1,6 +1,6 @@
 (function () {
 
-  var app = angular.module('mynotes', ['ionic', 'mynotes.notestore']);
+  var app = angular.module('mynotes', ['ionic', 'mynotes.user', 'mynotes.notestore']);
 
   app.controller('ListCtrl', function ($scope, NoteStore) {
 
@@ -9,7 +9,7 @@
 
     $scope.doScreenRefresh = function () {
       refreshNotes()
-        .finally(function(){
+        .finally(function () {
           $scope.$broadcast('scroll.refreshComplete');
         });
     };
@@ -43,7 +43,7 @@
   app.controller('AddCtrl', function ($scope, $state, NoteStore) {
 
     $scope.note = {
-      _id: new Date().getTime().toString(),
+      id: new Date().getTime().toString(),
       title: '',
       description: ''
     };
@@ -70,11 +70,32 @@
 
   });
 
+  app.controller('LoginCtrl', function ($scope, $state, $ionicHistory, User) {
+
+    $scope.credentials = {
+      user: '',
+      password: ''
+    };
+
+
+    $scope.login = function () {
+      User.login($scope.credentials)
+        .then(function () {
+            $ionicHistory.nextViewOptions({historyRoot: 'true'})
+            $state.go('list');
+          },
+          function () {
+            $scope.errorMsg = "Login failed"
+          });
+    }
+
+  });
+
   app.config(function ($stateProvider, $urlRouterProvider) {
 
     $stateProvider.//
     state('list', {
-        url: '/list',
+        url: '/',
         templateUrl: 'templates/list.html',
         cache: false
       }
@@ -88,11 +109,22 @@
         templateUrl: 'templates/edit.html',
         controller: 'EditCtrl'
       }
+    ).state('login', {
+        url: '/login',
+        templateUrl: 'templates/login.html',
+        controller: 'LoginCtrl'
+      }
     );
-    $urlRouterProvider.otherwise('list');
+    $urlRouterProvider.otherwise('/');
   });
 
-  app.run(function ($ionicPlatform) {
+  app.run(function ($rootScope, $state, $ionicPlatform, User) {
+    $rootScope.$on('$stateChangeStart', function (event, toState) {
+      if (!User.isLoggedIn() && toState.name != 'login') {
+        event.preventDefault();
+        $state.go('login');
+      }
+    });
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
