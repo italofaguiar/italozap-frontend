@@ -72,11 +72,14 @@
 
   app.controller('LoginCtrl', function ($scope, $state, $ionicHistory, User) {
 
-    $scope.credentials = {
-      user: '',
-      password: ''
+    function renewCredentials() {
+      $scope.credentials = {
+        user: '',
+        password: ''
+      };
     };
 
+    renewCredentials();
 
     $scope.login = function () {
       User.login($scope.credentials)
@@ -85,6 +88,7 @@
             $state.go('list');
           },
           function () {
+            renewCredentials();
             $scope.errorMsg = "Login failed"
           });
     }
