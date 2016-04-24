@@ -104,6 +104,7 @@
     $scope.signup = function () {
       User.signup($scope.credentials)
         .then(function () {
+            window.localStorage['user'] = $scope.credentials.user;
             $ionicHistory.nextViewOptions({historyRoot: 'true'})
             $state.go('list');
           },
