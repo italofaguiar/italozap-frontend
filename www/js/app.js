@@ -1,6 +1,6 @@
 (function () {
 
-  var app = angular.module('mynotes', ['ionic', 'mynotes.user', 'mynotes.notestore']);
+  var app = angular.module('mynotes', ['ionic', 'mynotes.user', 'mynotes.notestore', 'ngTouch', 'ui.bootstrap']);
 
   app.controller('ListCtrl', function ($scope, NoteStore, $state, $ionicHistory, User) {
 
