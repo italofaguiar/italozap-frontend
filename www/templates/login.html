@@ -8,16 +8,15 @@
         <input type="password" placeholder="Password" ng-model="credentials.password">
       </div>
     </div>
-    <div class="card" ng-show=errorMsg>
-      <div class="item item-text-wrap assertive">
-        {{errorMsg}}
-      </div>
+    <div class="padding">
+      <div class="alert alert-danger" ng-show=errorMsg>{{errorMsg}}</div>
     </div>
     <div class="padding">
       <button class="button button-block button-positive icon-left ion-log-in"
               ng-click="login()">Sign in
       </button>
-    </div><div class="padding">
+    </div>
+    <div class="padding">
       <button class="button button-block button-balanced icon-left ion-person-add"
               ng-click="signup()">Sign up
       </button>
