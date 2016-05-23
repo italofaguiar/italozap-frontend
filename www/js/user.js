@@ -1,8 +1,8 @@
-angular.module('mynotes.user', [])
+angular.module('myzap.user', [])
   .factory('User', function ($http) {
 
     // var apiUrl = 'http://ws.tocae.com.br';
-    var apiUrl = 'http://localhost:8300';
+    var apiUrl = 'http://192.168.0.18:8300';
 
     return {
 
@@ -33,7 +33,7 @@ angular.module('mynotes.user', [])
         // TODO: nao precisa passar por aqui quando for um logout
         var auth = window.localStorage['auth'];
         $http.defaults.headers.common.Authorization = auth;
-        return $http.get(apiUrl + '/notes/').then(
+        return $http.get(apiUrl + '/rooms/').then(
           function (response) {
             if (response.status == 200) {
               return true;

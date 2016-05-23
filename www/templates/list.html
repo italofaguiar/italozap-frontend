@@ -1,4 +1,4 @@
-<ion-view view-title="My Notes" ng-controller="ListCtrl">
+<ion-view view-title="My Zap - Rooms" ng-controller="ListCtrl">
   <ion-nav-buttons side="right">
     <button class="button icon-left ion-person">
       {{user}}
@@ -12,19 +12,21 @@
     <ion-list show-reorder="reordering">
       <ion-item
         class="item-remove-animate item-icon-right"
-        href="#/edit/{{note._id}}"
-        ng-repeat="note in notes track by note._id">
-        <h2>{{note.title}}</h2>
-        <p>{{note.description}}</p>
+        ng-repeat="room in rooms track by room._id">
+
+        <h2>{{room.title}}</h2>
+        <p>{{room.description}}</p>
         <i class="icon ion-ios-arrow-right"></i>
-        <ion-reorder-button
-          class="ion-drag"
-          on-reorder="move(note, $fromIndex, $toIndex)"></ion-reorder-button>
+
         <ion-option-button
           side="left"
           class="button-assertive icon-left ion-trash-a"
-          ng-click="remove(note._id)">
-          Delete
+          ng-click="remove(room._id)">
+        </ion-option-button>
+
+        <ion-option-button
+          class="button-positive icon-left ion-edit"
+          ng-click='$state.go("edit", {roomId: room._id})'>
         </ion-option-button>
       </ion-item>
     </ion-list>
@@ -33,7 +35,7 @@
     <a
       href="#/add"
       class="button button-balanced icon-left ion-plus-circled">
-      New Note
+      New Room
     </a>
     <button class="footer-middle-button button button-assertive icon-left ion-trash-a"
             ng-click="removeAll()">

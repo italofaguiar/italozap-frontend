@@ -1,37 +1,38 @@
 (function () {
 
-  var app = angular.module('mynotes', ['ionic', 'mynotes.user', 'mynotes.notestore', 'ngTouch', 'ui.bootstrap']);
+  var app = angular.module('myzap', ['ionic', 'myzap.user', 'myzap.roomstore', 'ngTouch', 'ui.bootstrap']);
 
-  app.controller('ListCtrl', function ($scope, NoteStore, $state, $ionicHistory, User) {
+  app.controller('ListCtrl', function ($scope, RoomStore, $state, $ionicHistory, User) {
 
     $scope.user = window.localStorage['user'];
     $scope.reordering = false;
+    $scope.$state = $state;
 
     $scope.doScreenRefresh = function () {
-      refreshNotes()
+      refreshRooms()
         .finally(function () {
           $scope.$broadcast('scroll.refreshComplete');
         });
     };
 
-    function refreshNotes() {
-      return NoteStore.list().then(function (notes) {
-        $scope.notes = notes;
+    function refreshRooms() {
+      return RoomStore.list().then(function (rooms) {
+        $scope.rooms = rooms;
       });
     };
 
-    refreshNotes();
+    refreshRooms();
 
-    $scope.remove = function (noteId) {
-      NoteStore.remove(noteId).then(refreshNotes);
+    $scope.remove = function (roomId) {
+      RoomStore.remove(roomId).then(refreshRooms);
     };
 
     $scope.removeAll = function () {
-      NoteStore.removeAll().then(refreshNotes);
+      RoomStore.removeAll().then(refreshRooms);
     };
 
-    $scope.move = function (note, fromIndex, toIndex) {
-      NoteStore.move(note, fromIndex, toIndex);
+    $scope.move = function (room, fromIndex, toIndex) {
+      RoomStore.move(room, fromIndex, toIndex);
     };
 
     $scope.toogleReordering = function () {
@@ -46,9 +47,9 @@
 
   });
 
-  app.controller('AddCtrl', function ($scope, $state, NoteStore) {
+  app.controller('AddCtrl', function ($scope, $state, RoomStore) {
 
-    $scope.note = {
+    $scope.room = {
       // TODO : tirar essa dependencia de _id daqui!!
       _id: new Date().getTime().toString(),
       title: '',
@@ -56,21 +57,21 @@
     };
 
     $scope.save = function () {
-      NoteStore.create($scope.note).then(function () {
+      RoomStore.create($scope.room).then(function () {
         $state.go('list');
       });
     };
   });
 
-  app.controller('EditCtrl', function ($scope, $state, NoteStore) {
+  app.controller('EditCtrl', function ($scope, $state, RoomStore) {
 
-    NoteStore.get($state.params.noteId)
-      .then(function (note) {
-        $scope.note = angular.copy(note);
+    RoomStore.get($state.params.roomId)
+      .then(function (room) {
+        $scope.room = angular.copy(room);
       });
 
     $scope.save = function () {
-      NoteStore.update($scope.note).then(function () {
+      RoomStore.update($scope.room).then(function () {
         $state.go('list');
       });
     }
@@ -130,7 +131,7 @@
         controller: 'AddCtrl'
       }
     ).state('edit', {
-        url: '/edit/:noteId',
+        url: '/edit/:roomId',
         templateUrl: 'templates/edit.html',
         controller: 'EditCtrl'
       }
