@@ -12,7 +12,8 @@
     <ion-list show-reorder="reordering">
       <ion-item
         class="item-remove-animate item-icon-right"
-        ng-repeat="room in rooms track by room._id">
+        ng-repeat="room in rooms track by room._id"
+        ng-click='goRoom(room)'>
 
         <h2>{{room.title}}</h2>
         <p>{{room.description}}</p>

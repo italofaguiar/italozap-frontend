@@ -1,0 +1,20 @@
+<ion-view view-title="{{room.title}}">
+  <ion-content>
+    <div class="chat-panel">
+      <ion-list>
+        <ion-item ng-repeat="message in messages">
+          <h2>{{message.user}}</h2>
+          <p>{{message.text}}</p>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-content>
+  <ion-footer-bar class="bar-stable text-wrapper">
+    <div class="row">
+        <input id="chat-text" type="text" placeholder="Type a message..." ng-model="localMessage.text">
+        <button class="chat-button button button-large button-positive ion-paper-airplane"
+                ng-click="pushMessage()">
+        </button>
+    </div>
+  </ion-footer-bar>
+</ion-view>

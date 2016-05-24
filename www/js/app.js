@@ -1,6 +1,6 @@
 (function () {
 
-  var app = angular.module('myzap', ['ionic', 'myzap.user', 'myzap.roomstore', 'ngTouch', 'ui.bootstrap']);
+  var app = angular.module('myzap', ['ionic', 'myzap.user', 'myzap.roomstore', 'myzap.chatstore', 'ngTouch', 'ui.bootstrap']);
 
   app.controller('ListCtrl', function ($scope, RoomStore, $state, $ionicHistory, User) {
 
@@ -22,6 +22,11 @@
     };
 
     refreshRooms();
+
+    $scope.goRoom = function (room) {
+      window.localStorage['currentRoom'] = JSON.stringify(room);
+      $state.go("room", {roomId: room._id})
+    };
 
     $scope.remove = function (roomId) {
       RoomStore.remove(roomId).then(refreshRooms);
@@ -78,6 +83,40 @@
 
   });
 
+  app.controller('RoomCtrl', function ($scope, $state, ChatStore) {
+    var socket = io('http://192.168.0.18:8300');
+
+
+    var room = $scope.room = JSON.parse(window.localStorage['currentRoom']);
+    $scope.user = window.localStorage['user'];
+    $scope.localMessage = {user: $scope.user, text: ''};
+    $scope.messages = [];
+
+    socket.emit('room entered', {roomId: room._id, user: $scope.user});
+
+    $scope.pushMessage = function () {
+      ChatStore.pushMessage(room._id, $scope.localMessage).then(
+        function (result) {
+          var localMessage = angular.copy($scope.localMessage);
+
+          var roomMessage = {roomId: room._id, message: localMessage}
+
+          socket.emit('chat message', roomMessage);
+
+          $scope.localMessage.text = '';
+        },
+        function (err) {
+          console.log('ERROR = ' + err)
+        });
+    };
+
+    socket.on('chat message', function (message) {
+      $scope.$apply(function () {
+        $scope.messages.push(message);
+      })
+    });
+  });
+
   app.controller('LoginCtrl', function ($scope, $state, $ionicHistory, User) {
 
     function renewCredentials() {
@@ -124,6 +163,11 @@
         url: '/',
         templateUrl: 'templates/list.html',
         cache: false
+      }
+    ).state('room', {
+        url: '/room/:roomId',
+        templateUrl: 'templates/room.html',
+        controller: 'RoomCtrl'
       }
     ).state('add', {
         url: '/add',

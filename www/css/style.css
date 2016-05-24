@@ -5,3 +5,21 @@
 ion-option-button {
   width: 70px;
 }
+
+.text-wrapper {
+  height: 70px
+}
+
+#chat-text {
+  padding-top: 22px;
+  padding-bottom: 22px;
+  padding-left: 15px;
+  width: 84%;
+  border: groove;
+}
+
+.chat-button {
+  height: 50px;
+  width: 16%;
+  margin-left: 10px;
+}

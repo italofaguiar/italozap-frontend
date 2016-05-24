@@ -4,6 +4,7 @@
 node_modules/
 platforms/
 plugins/
+lib/
 .idea/
 .idea/workspace.xml
 *.apk
