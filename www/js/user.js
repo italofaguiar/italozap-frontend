@@ -1,8 +1,8 @@
 angular.module('myzap.user', [])
   .factory('User', function ($http) {
 
-    // var apiUrl = 'http://ws.tocae.com.br';
-    var apiUrl = 'http://192.168.0.18:8300';
+    var apiUrl = 'http://ws.tocae.com.br';
+    // var apiUrl = 'http://192.168.0.18:8300';
 
     return {
 
