@@ -1,6 +1,6 @@
 (function () {
 
-  var app = angular.module('myzap', ['ionic', 'myzap.user', 'myzap.roomstore', 'myzap.chatstore']);
+  var app = angular.module('myzap', ['ionic', 'myzap.user', 'myzap.roomstore', 'myzap.chatstore', 'myzap.backendProvider']);
 
   app.controller('ListCtrl', function ($scope, RoomStore, $state, $ionicHistory, User) {
 
@@ -83,10 +83,8 @@
 
   });
 
-  app.controller('RoomCtrl', function ($scope, $state, ChatStore) {
-    // var socket = io('http://192.168.0.18:8300');
-    var socket = io('http://ws.tocae.com.br');
-
+  app.controller('RoomCtrl', function ($scope, $state, ChatStore, backendProvider) {
+    var socket = io(backendProvider.getUrl());
 
     var room = $scope.room = JSON.parse(window.localStorage['currentRoom']);
     $scope.user = window.localStorage['user'];

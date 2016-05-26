@@ -1,8 +1,7 @@
-angular.module('myzap.user', [])
-  .factory('User', function ($http) {
+angular.module('myzap.user', ['myzap.backendProvider'])
+  .factory('User', function ($http, backendProvider) {
 
-    var apiUrl = 'http://ws.tocae.com.br';
-    // var apiUrl = 'http://192.168.0.18:8300';
+    var apiUrl = backendProvider.getUrl();
 
     return {
 
