@@ -1,9 +1,9 @@
-angular.module('italoZap.chatstore', ['italoZap.apiUrlProvider'])
-  .factory('ChatStore', function ($http, apiUrlProvider) {
+angular.module('italoZap.chatstore', ['italoZap.backendService'])
+  .factory('ChatStore', function ($http, backendService) {
 
     return {
       pushMessage: function (roomId, message) {
-        return $http.post(apiUrlProvider.getUrl() + '/rooms/' + roomId + '/pushMessage' , message);
+        return $http.post(backendService.getUrl() + '/rooms/' + roomId + '/pushMessage' , message);
       }
 
     };

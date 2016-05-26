@@ -1,6 +1,6 @@
 (function () {
 
-  var app = angular.module('italoZap', ['ionic', 'italoZap.user', 'italoZap.roomstore', 'italoZap.chatstore', 'italoZap.apiUrlProvider', 'ngRoute']);
+  var app = angular.module('italoZap', ['ionic', 'italoZap.user', 'italoZap.roomstore', 'italoZap.chatstore', 'italoZap.backendService', 'ngRoute']);
 
   app.controller('ListCtrl', function ($scope, RoomStore, $state, $ionicHistory, User) {
 
@@ -83,8 +83,8 @@
 
   });
 
-  app.controller('RoomCtrl', function ($scope, $state, ChatStore, apiUrlProvider) {
-    var socket = io(apiUrlProvider.getUrl());
+  app.controller('RoomCtrl', function ($scope, $state, ChatStore, backendService) {
+    var socket = backendService.getSocketIo();
 
     var room = $scope.room = JSON.parse(window.localStorage['currentRoom']);
     $scope.user = window.localStorage['user'];

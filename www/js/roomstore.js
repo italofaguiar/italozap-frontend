@@ -1,7 +1,7 @@
-angular.module('italoZap.roomstore', ['italoZap.apiUrlProvider'])
-  .factory('RoomStore', function ($http, apiUrlProvider) {
+angular.module('italoZap.roomstore', ['italoZap.backendService'])
+  .factory('RoomStore', function ($http, backendService) {
 
-    var apiUrl = apiUrlProvider.getUrl();
+    var apiUrl = backendService.getUrl();
     
     return {
 

@@ -1,7 +1,7 @@
-angular.module('italoZap.user', ['italoZap.apiUrlProvider'])
-  .factory('User', function ($http, apiUrlProvider) {
+angular.module('italoZap.user', ['italoZap.backendService'])
+  .factory('User', function ($http, backendService) {
 
-    var apiUrl = apiUrlProvider.getUrl();
+    var apiUrl = backendService.getUrl();
 
     return {
 
