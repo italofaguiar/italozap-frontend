@@ -1,7 +1,7 @@
-angular.module('myzap.user', ['myzap.backendProvider'])
-  .factory('User', function ($http, backendProvider) {
+angular.module('myzap.user', ['myzap.apiUrlProvider'])
+  .factory('User', function ($http, apiUrlProvider) {
 
-    var apiUrl = backendProvider.getUrl();
+    var apiUrl = apiUrlProvider.getUrl();
 
     return {
 

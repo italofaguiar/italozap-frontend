@@ -1,7 +1,7 @@
-angular.module('myzap.roomstore', ['myzap.backendProvider'])
-  .factory('RoomStore', function ($http, backendProvider) {
+angular.module('myzap.roomstore', ['myzap.apiUrlProvider'])
+  .factory('RoomStore', function ($http, apiUrlProvider) {
 
-    var apiUrl = backendProvider.getUrl();
+    var apiUrl = apiUrlProvider.getUrl();
     
     return {
 
