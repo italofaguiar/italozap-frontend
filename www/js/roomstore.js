@@ -1,4 +1,4 @@
-angular.module('myzap.roomstore', ['myzap.apiUrlProvider'])
+angular.module('italoZap.roomstore', ['italoZap.apiUrlProvider'])
   .factory('RoomStore', function ($http, apiUrlProvider) {
 
     var apiUrl = apiUrlProvider.getUrl();

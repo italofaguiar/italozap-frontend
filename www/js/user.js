@@ -1,4 +1,4 @@
-angular.module('myzap.user', ['myzap.apiUrlProvider'])
+angular.module('italoZap.user', ['italoZap.apiUrlProvider'])
   .factory('User', function ($http, apiUrlProvider) {
 
     var apiUrl = apiUrlProvider.getUrl();

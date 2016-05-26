@@ -1,4 +1,4 @@
-angular.module('myzap.chatstore', ['myzap.apiUrlProvider'])
+angular.module('italoZap.chatstore', ['italoZap.apiUrlProvider'])
   .factory('ChatStore', function ($http, apiUrlProvider) {
 
     return {

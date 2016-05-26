@@ -1,6 +1,6 @@
 (function () {
 
-  var app = angular.module('myzap', ['ionic', 'myzap.user', 'myzap.roomstore', 'myzap.chatstore', 'myzap.apiUrlProvider']);
+  var app = angular.module('italoZap', ['ionic', 'italoZap.user', 'italoZap.roomstore', 'italoZap.chatstore', 'italoZap.apiUrlProvider']);
 
   app.controller('ListCtrl', function ($scope, RoomStore, $state, $ionicHistory, User) {
 
