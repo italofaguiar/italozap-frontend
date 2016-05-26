@@ -198,13 +198,13 @@
       });
     });
 
-    var setUpBackNavBrowserBroadcastEvent = function () {
+    // essa funcao detecta tanto back como fwd do browser (que no fundo ambos botoes tem a mesma dinamica)
+    var setUpBrowserNavButtonBroadcastEvent = function () {
       $rootScope.$watch(function () {
         return $location.path()
       }, function (newLocation, oldLocation) {
-        if (oldLocation
-          && $rootScope.actualLocation === newLocation) {
-          $rootScope.$broadcast('backNavBrowser', oldLocation);
+        if ($rootScope.actualLocation === newLocation) {
+          $rootScope.$broadcast('browserNavButton', oldLocation, newLocation);
         }
       });
       // normalmente o $locationChangeSuccess é analisado após o watch. Mas, em um back/foward do browser, é analisado primeiro
@@ -213,15 +213,15 @@
       });
     };
 
-    setUpBackNavBrowserBroadcastEvent();
+    setUpBrowserNavButtonBroadcastEvent();
 
-    $rootScope.$on('backNavBrowser', function (event, oldLocation) {
+    $rootScope.$on('browserNavButton', function (event, oldLocation, newLocation) {
       var oldLocationSplited = oldLocation.split('/');
       var roomId = oldLocationSplited[2];
-
-        if(oldLocationSplited[1] == 'room' && roomId) {
+      
+        if(newLocation == '/' && oldLocationSplited[1] == 'room' && roomId) {
         console.log(' BACK FROM ROOM: ' + roomId);
-        backendService.getSocketIo().emit('room left', {roomId: roomId, user: window.localStorage['user']})
+        backendService.getSocketIo().disconnect();
       }
     });
 

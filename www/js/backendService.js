@@ -11,6 +11,9 @@ angular.module('italoZap.backendService', [])
       },
 
       getSocketIo: function () {
+        if (socketIo.disconnected) {
+          socketIo.connect();
+        }
         return socketIo;
       }
     }
