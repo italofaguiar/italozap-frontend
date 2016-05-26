@@ -1,6 +1,6 @@
 (function () {
 
-  var app = angular.module('myzap', ['ionic', 'myzap.user', 'myzap.roomstore', 'myzap.chatstore', 'ngTouch', 'ui.bootstrap']);
+  var app = angular.module('myzap', ['ionic', 'myzap.user', 'myzap.roomstore', 'myzap.chatstore']);
 
   app.controller('ListCtrl', function ($scope, RoomStore, $state, $ionicHistory, User) {
 
@@ -146,7 +146,7 @@
       User.signup($scope.credentials)
         .then(function () {
             window.localStorage['user'] = $scope.credentials.user;
-            $ionicHistory.nextViewOptions({historyRoot: 'true'})
+            $ionicHistory.nextViewOptions({historyRoot: 'true'});
             $state.go('list');
           },
           function () {
