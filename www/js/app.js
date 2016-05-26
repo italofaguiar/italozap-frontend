@@ -1,6 +1,6 @@
 (function () {
 
-  var app = angular.module('italoZap', ['ionic', 'italoZap.user', 'italoZap.roomstore', 'italoZap.chatstore', 'italoZap.apiUrlProvider']);
+  var app = angular.module('italoZap', ['ionic', 'italoZap.user', 'italoZap.roomstore', 'italoZap.chatstore', 'italoZap.apiUrlProvider', 'ngRoute']);
 
   app.controller('ListCtrl', function ($scope, RoomStore, $state, $ionicHistory, User) {
 
@@ -46,9 +46,9 @@
 
     $scope.logout = function () {
       User.logout();
-      $ionicHistory.nextViewOptions({historyRoot: 'true'})
+      $ionicHistory.nextViewOptions({historyRoot: 'true'});
       $state.go('login');
-    }
+    };
 
   });
 
@@ -188,7 +188,8 @@
     $urlRouterProvider.otherwise('/');
   });
 
-  app.run(function ($rootScope, $state, $ionicPlatform, $ionicHistory, User) {
+  app.run(function ($rootScope, $state, $ionicPlatform, $ionicHistory, User, $route, $location) {
+
     $rootScope.$on('$stateChangeStart', function (event, toState) {
       User.checkIfLogged().then(function (isLoggedIn) {
         if (!isLoggedIn && toState.name != 'login') {
@@ -198,6 +199,32 @@
         }
       });
     });
+
+    var setUpBackNavBrowserBroadcastEvent = function () {
+      $rootScope.$watch(function () {
+        return $location.path()
+      }, function (newLocation, oldLocation) {
+        if (oldLocation
+          && $rootScope.actualLocation === newLocation) {
+          $rootScope.$broadcast('backNavBrowser', oldLocation);
+        }
+      });
+      // normalmente o $locationChangeSuccess é analisado após o watch. Mas, em um back/foward do browser, é analisado primeiro
+      $rootScope.$on('$locationChangeSuccess', function () {
+        $rootScope.actualLocation = $location.path();
+      });
+    };
+
+    setUpBackNavBrowserBroadcastEvent();
+
+    $rootScope.$on('backNavBrowser', function (event, oldLocation) {
+      var oldPath = oldLocation.split('/');
+
+      if(oldPath[1] == 'room' && oldPath[2]) {
+        console.log(' BACK FROM ROOM: ' + oldPath[2]);
+      }
+    });
+
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
