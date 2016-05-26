@@ -98,9 +98,7 @@
         function (result) {
           var localMessage = angular.copy($scope.localMessage);
 
-          var roomMessage = {roomId: room._id, message: localMessage}
-
-          socket.emit('chat message', roomMessage);
+          socket.emit('chat message', localMessage);
 
           $scope.localMessage.text = '';
         },
@@ -188,7 +186,7 @@
     $urlRouterProvider.otherwise('/');
   });
 
-  app.run(function ($rootScope, $state, $ionicPlatform, $ionicHistory, User, $route, $location) {
+  app.run(function ($rootScope, $state, $ionicPlatform, $ionicHistory, User, $route, $location, backendService) {
 
     $rootScope.$on('$stateChangeStart', function (event, toState) {
       User.checkIfLogged().then(function (isLoggedIn) {
@@ -218,10 +216,12 @@
     setUpBackNavBrowserBroadcastEvent();
 
     $rootScope.$on('backNavBrowser', function (event, oldLocation) {
-      var oldPath = oldLocation.split('/');
+      var oldLocationSplited = oldLocation.split('/');
+      var roomId = oldLocationSplited[2];
 
-      if(oldPath[1] == 'room' && oldPath[2]) {
-        console.log(' BACK FROM ROOM: ' + oldPath[2]);
+        if(oldLocationSplited[1] == 'room' && roomId) {
+        console.log(' BACK FROM ROOM: ' + roomId);
+        backendService.getSocketIo().emit('room left', {roomId: roomId, user: window.localStorage['user']})
       }
     });
 
