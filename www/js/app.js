@@ -218,9 +218,8 @@
     $rootScope.$on('browserNavButton', function (event, oldLocation, newLocation) {
       var oldLocationSplited = oldLocation.split('/');
       var roomId = oldLocationSplited[2];
-      
-        if(newLocation == '/' && oldLocationSplited[1] == 'room' && roomId) {
-        console.log(' BACK FROM ROOM: ' + roomId);
+
+      if (newLocation == '/' && oldLocationSplited[1] == 'room' && roomId) {
         backendService.getSocketIo().disconnect();
       }
     });
