@@ -199,23 +199,20 @@
     });
 
     // essa funcao detecta tanto back como fwd do browser (que no fundo ambos botoes tem a mesma dinamica)
-    var setUpBrowserNavButtonBroadcastEvent = function () {
+    var setBroadcastNavBackEvent = function () {
       $rootScope.$watch(function () {
         return $location.path()
       }, function (newLocation, oldLocation) {
-        if ($rootScope.actualLocation === newLocation) {
-          $rootScope.$broadcast('browserNavButton', oldLocation, newLocation);
+        if ($rootScope.oldPathLocation === newLocation) {
+          $rootScope.$broadcast('navBackEvent', oldLocation, newLocation);
         }
-      });
-      // normalmente o $locationChangeSuccess é analisado após o watch. Mas, em um back/foward do browser, é analisado primeiro
-      $rootScope.$on('$locationChangeSuccess', function () {
-        $rootScope.actualLocation = $location.path();
+        $rootScope.oldPathLocation = oldLocation;
       });
     };
 
-    setUpBrowserNavButtonBroadcastEvent();
+    setBroadcastNavBackEvent();
 
-    $rootScope.$on('browserNavButton', function (event, oldLocation, newLocation) {
+    $rootScope.$on('navBackEvent', function (event, oldLocation, newLocation) {
       var oldLocationSplited = oldLocation.split('/');
       var roomId = oldLocationSplited[2];
 
