@@ -90,6 +90,10 @@
     $scope.user = window.localStorage['user'];
     $scope.localMessage = {user: $scope.user, text: ''};
     $scope.messages = [];
+    $scope.typingMsg = '';
+    var typing = false;
+    var TYPING_TIMER_LENGTH = 500; //ms
+    var lastTypingTime;
 
     socket.emit('room entered', {roomId: room._id, user: $scope.user});
 
@@ -111,6 +115,33 @@
       $scope.$apply(function () {
         $scope.messages.push(message);
       })
+    });
+
+    $scope.$watch('localMessage.text', function (newValue, oldValue) {
+      if (!typing) {
+        typing = true;
+        socket.emit('typing');
+      }
+      lastTypingTime = (new Date()).getTime();
+
+      setTimeout(function () {
+        var typingTimer = (new Date()).getTime();
+        var timeDiff = typingTimer - lastTypingTime;
+        if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
+          socket.emit('stop typing');
+          typing = false;
+        }
+      }, TYPING_TIMER_LENGTH);
+    });
+
+    socket.on('typing', function (user) {
+      $scope.typingMsg = user + " está digitando...";
+      $scope.$digest();
+    });
+
+    socket.on('stop typing', function (user) {
+      $scope.typingMsg = '';
+      $scope.$digest();
     });
   });
 
